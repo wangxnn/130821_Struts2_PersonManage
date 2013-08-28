@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    
+<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false"></constant>
+	<constant name="struts.serve.static.browserCache" value="false"></constant>
+	<constant name="struts.i18n.reload" value="true"></constant>
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	<constant name="struts.locale" value="zh_CN"></constant>
+
+	<package name="pm" namespace="/pm" extends="struts-default">
+	
+		<!-- 定义添加了 权限拦截器和令牌拦截器的 拦截器栈-->		
+		<interceptors>
+			<interceptor name="permission" class="cn.wxn.web.interceptor.Permission" />
+			<interceptor-stack name="permissionAndTokenStack">
+				<interceptor-ref name="defaultStack" />
+				<!-- 令牌拦截器只针对add方法 -->
+				<interceptor-ref name="token">
+					<param name="includeMethods">add</param>
+				</interceptor-ref>
+				<interceptor-ref name="permission" />
+			</interceptor-stack>
+		</interceptors>
+	
+		<action name="login_*"  class="cn.wxn.web.action.Login"  method="{1}">
+			<result name="success">/WEB-INF/pages/main.jsp</result>
+			<result name="input">/WEB-INF/pages/login.jsp</result>
+		</action>
+		
+		<action name="loginUI">
+			<result>/WEB-INF/pages/login.jsp</result>
+		</action>
+		
+		<action name="main_head">
+			<result>/WEB-INF/pages/head.jsp</result>
+		</action>
+		<action name="main_left">
+			<result>/WEB-INF/pages/left.jsp</result>
+		</action>
+		<action name="main_pane">
+			<result>/WEB-INF/pages/pane.jsp</result>
+		</action>
+		<action name="main_main">
+			<result>/WEB-INF/pages/main.jsp</result>
+		</action>
+		
+		<action name="addUI">
+			<result>/WEB-INF/pages/add.jsp</result>
+		</action>
+
+		<!-- 用户的增删改查的Action -->
+		<action name="um_*" class="cn.wxn.web.action.UserManager" method="{1}">
+			<!-- 将权限拦截器栈对应到这个Action下 -->
+			<interceptor-ref name="permissionAndTokenStack"></interceptor-ref>
+			
+			<!-- 配置结果集  -->
+				<!-- 显示管理页面的主要页面 -->
+			<result name="all">/WEB-INF/pages/welcome.jsp</result>
+			<!-- 成功之后跳转到消息显示页面 -->
+			<result name="success">/message.jsp</result>
+
+			<result name="error">/error.jsp</result>
+			<result name="invalid.token">/error.jsp</result>
+			
+			<result name="input">/WEB-INF/pages/add.jsp</result>
+			
+			<result name="checkUI">/WEB-INF/pages/check.jsp</result>
+			
+			<result name="editUI">/WEB-INF/pages/edit.jsp</result>
+		</action>
+	</package>
+</struts>    

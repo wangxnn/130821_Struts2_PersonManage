@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!DOCTYPE validators PUBLIC
+  		"-//Apache Struts//XWork Validator 1.0.3//EN"
+  		"http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<!-- 
+校验规则：
+	userName:		不为空，5~18位数字或者字符
+	loginName:		不为空，5-18位字符或者数字
+	loginPwd:			不为空，5-24位数字或者字符
+	sex:					可以为空，只能是		"男","女"
+	birthday:			可以为空，不为空时必须符合日期格式
+	education:		可以为空，
+	telephone:		可以为空
+	interest:			可以为空
+	remark:				可以为空
+	
+	uploadFile:
+	uploadfileContentType:
+	uploadfileFileName:
+ -->
+<validators>
+
+	    <field name="birthday">
+        <field-validator type="date">
+            <param name="min">1949-10-01</param>
+            <param name="max">2013-08-23</param>
+            <message>出生日期只能是建国之后的</message>
+        </field-validator>
+    </field>
+
+	<field name="userName">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>用户名不能为空</message>
+		</field-validator>
+		<!-- 
+		<field-validator type="stringlength">
+			<param name="minLength">5</param>
+			<param name="maxLength">18</param>
+			<message>用户名必须是5至18位的数字或者字符组合</message>
+		</field-validator>
+		  -->
+		 <field-validator type="regex">
+		 	  <param name="regex">(^[0-9a-z_A-Z\u4e00-\u9fa5]{5,18}$)</param>
+		 	<message>用户名必须是5至18位的数字或者字符组合</message>
+		 </field-validator>
+	</field>
+	
+		<field name="loginName">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>登录名不能为空</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">5</param>
+			<param name="maxLength">18</param>
+			<message>登录名必须是5至18位的数字或者字符组合</message>
+		</field-validator>
+	</field>
+	
+			<field name="loginPwd">
+		<field-validator type="requiredstring">
+			<param name="trim">true</param>
+			<message>密码不能为空</message>
+		</field-validator>
+		<field-validator type="stringlength">
+			<param name="minLength">5</param>
+			<param name="maxLength">24</param>
+			<message>密码必须是5至24位的数字或者字符组合</message>
+		</field-validator>
+	</field>
+
+</validators>
